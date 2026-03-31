@@ -2,15 +2,14 @@
 
 Um buscador de informações do sistema (fetch) rápido, leve e modular, feito em C++20 para sistemas Linux.
 
-## PRIMEIRAMENTE!
-este projeto esta nas suas primeiras versões, quer customizar seu alphafetch? CODIGO FONTE! mudar algo? CODIGO FONTE! adicionar suporte ao KDE? CONTRIBUIÇÃO!
-(não tem suporte ao KDE na parte de ricing, como o cursor, tema e icone)
+> ⚠️ **Aviso:** Este projeto está nas suas primeiras versões! Quer customizar seu alphafetch? **CÓDIGO FONTE!** Mudar algo? **CÓDIGO FONTE!** Adicionar suporte ao KDE? **CONTRIBUIÇÃO!**
+> *(Atualmente não há suporte ao KDE na parte de ricing, como detecção de cursor, tema e ícone).*
 
-![Screenshot](screenshots/fetch.png)
+
 
 ## 🚀 Funcionalidades
 
-* **Rápido e Leve:** Feito em C++, sem interprets pesados.
+* **Rápido e Leve:** Feito em C++, sem interpretadores pesados.
 * **Modular:** Cada informação (CPU, GPU, RAM) tem seu próprio arquivo `.cpp`.
 * **Completo:** Mostra informações de Hardware, Sistema, Temas GTK e uso de Disco/RAM.
 * **Design Limpo:** Alinhamento automático lado a lado com arte ASCII.
