@@ -24,7 +24,7 @@ std::string get_gsettings_value(const char* schema, const char* key) {
             raw_output.pop_back(); // Remove \n
             return raw_output.substr(1, raw_output.length() - 2); // Remove as aspas
         }
-        return "não é compativel com KDE no momento";
+        return "THEMES = BRUH;
     } catch (...) {
         return "não é compativel com KDE no momento";
     }
