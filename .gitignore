@@ -1,0 +1,5 @@
+# Ignorar a pasta de arquivos temporários de compilação
+obj/
+
+# Ignorar o executável final do Linux
+alphafetch
