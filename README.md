@@ -5,7 +5,9 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 > ⚠️ **Aviso:** Este projeto está nas suas primeiras versões! Quer customizar seu alphafetch? **CÓDIGO FONTE!** Mudar algo? **CÓDIGO FONTE!** Adicionar suporte ao KDE? **CONTRIBUIÇÃO!**
 > *(Atualmente não há suporte ao KDE na parte de ricing, como detecção de cursor, tema e ícone).*
 
-
+## 📸 demonstração
+![print de alpha](./screenshots/screenshot_gatito.png)
+![print do grande Tux](./screenshots/screenshot_tux.png)
 
 ## 🚀 Funcionalidades
 
@@ -24,7 +26,7 @@ sudo apt install build-essential
 
 ### instalação
 1. clone o repositório(meio obvio)
-2. entre na pasta do projeto(``cd alphaprojetcs-cpp`` por padrão)
+2. entre na pasta do projeto(``cd alphafetch-cpp`` por padrão)
 3. compile!(`make`)
 4. instale no sistema(opcional mais recomendado)
 `sudo make install`
