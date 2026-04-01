@@ -24,7 +24,7 @@ sudo apt install playerctl
 
 - **para as Barras de Progresso (RAM/Disco):** O programa usa fontes Unicode padrão. Para melhor visualização dos ícones (se você decidir colocá-los futuramente), recomendamos o uso de uma **Nerd Font** no seu terminal (como a JetBrainsMono Nerd Font).
 
-- **LEMBRANDO:** o AlphaFetch foi desenvolvido e testado no **Debian 13(Trixie) até o momento, mas servidores do discord estão testando em outras distros(como o Gentoo)!
+- **LEMBRANDO:** o AlphaFetch foi desenvolvido e testado no **Debian 13(Trixie)** até o momento, mas servidores do discord estão testando em outras distros(como o Gentoo)!
 
 ## 🛠️ Como Compilar e Instalar
 
