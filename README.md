@@ -26,7 +26,7 @@ sudo apt install build-essential
 
 ### instalação
 1. clone o repositório(meio obvio)
-2. entre na pasta do projeto(``cd alphafetch-cpp`` por padrão)
+2. entre na pasta do projeto(``cd alphafetch`` por padrão)
 3. compile!(`make`)
 4. instale no sistema(opcional mais recomendado)
 `sudo make install`
