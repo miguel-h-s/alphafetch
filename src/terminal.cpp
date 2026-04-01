@@ -11,5 +11,5 @@ std::string get_terminal() {
     if (term != nullptr) {
         return term;
     }
-    return "TERMINAL = BRUH";
+    return "\033[1;31mBRUH\033[0m";
 }

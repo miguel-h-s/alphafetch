@@ -6,5 +6,5 @@ std::string get_shell() {
     if (shell != nullptr) {
         return shell;
     }
-    return "SHELL = BRUH";
+    return "\033[1;31mBRUH\033[0m";
 }

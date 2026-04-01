@@ -9,7 +9,7 @@
 std::string exec_command(const char* cmd) {
     std::array<char, 128> buffer;
     std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    std::unique_ptr<FILE, void(*)(FILE*)> pipe(popen(cmd, "r"), [](FILE* f) { if (f) pclose(f); });
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
@@ -38,9 +38,9 @@ std::string get_gpu_name() {
             
             return gpu_name;
         } else {
-            return "GPU NAME = BRUH";
+            return "\033[1;31mBRUH\033[0m";
         }
     } catch (...) {
-        return "erro que nem sei dizer (Error)";
+        return "\033[1;31mERROR\033[0m";
     }
 }

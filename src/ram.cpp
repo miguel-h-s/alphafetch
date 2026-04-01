@@ -7,7 +7,7 @@
 std::string get_ram() {
     struct sysinfo si;
     if (sysinfo(&si) != 0) {
-        return "Unknown";
+        return "BRUH";
     }
 
     // Convertendo bytes para Gigabytes (GiB)

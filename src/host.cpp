@@ -9,7 +9,7 @@ std::string get_user_host() {
     
     // Pega o hostname do sistema
     if (gethostname(hostname, 1023) != 0) {
-        return "unknown@unknown"; // Falha de segurança/sistema
+        return "\033[1;31mBRUH@BRUH\033[0m"; // Falha de segurança/sistema
     }
 
     // Pega o usuário logado via variável de ambiente

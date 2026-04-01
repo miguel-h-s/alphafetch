@@ -13,5 +13,5 @@ std::string get_cpu() {
             }
         }
     }
-    return "CPU = BRUH";
+    return "\033[1;31mBRUH\033[0m";
 }

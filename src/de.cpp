@@ -9,5 +9,5 @@ std::string get_wm() {
     if (wm != nullptr) {
         return wm;
     }
-    return "DE/WM = BRUH";
+    return "\033[1;31mBRUH\033[0m";
 }

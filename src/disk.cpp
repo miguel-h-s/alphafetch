@@ -8,7 +8,7 @@ std::string get_disk() {
     struct statvfs vfs;
     // Pega as info da partição raiz "/"
     if (statvfs("/", &vfs) != 0) {
-        return "Unknown";
+        return "\033[1;31mBRUH\033[0m";
     }
 
     // Tamanho total em Bytes

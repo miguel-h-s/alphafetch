@@ -4,10 +4,28 @@
 #include <algorithm> // Para std::max
 #include "fetch.hpp"
 #include "logos.hpp"
+#include "colors.hpp" // Adicionando o cabeçalho de cores!
+
+// Função auxiliar para pintar erros de vermelho automaticamente
+std::string format_info(const std::string& label, const std::string& value) {
+    using namespace Colors;
+    
+    // Se o valor contiver "BRUH", "Desconhecido" ou "Error", pintamos de vermelho negrito
+    if (value.find("BRUH") != std::string::npos || 
+        value == "Desconhecido" || 
+        value == "Error") {
+        return B_WHITE + label + RESET + B_RED + value + RESET;
+    }
+    
+    // Caso contrário, imprime normal (Título em branco negrito e valor padrão)
+    return B_WHITE + label + RESET + value;
+}
 
 int main() {
+    using namespace Colors;
+
     // --- 1. ARTE EM ASCII ---
-    std::string distro_atual = get_distro(); // Usa a função que você já tem!
+    std::string distro_atual = get_distro(); 
     int ascii_width = 0;
     
     // Puxa a arte certa baseada na distro detectada
@@ -20,69 +38,69 @@ int main() {
     
     // Separador (uma linha de traços)
     std::string separator = "";
-    // Precisamos calcular o tamanho real da string sem as cores ANSI para o separador.
-    // Para simplificar agora, vamos usar um tamanho fixo.
     for(int i=0; i<20; ++i) separator += "-";
 
-    // Lista de informações principais (sua lógica antiga, expandida)
+    // Lista de informações principais tratadas com a nossa função de cores
     std::vector<std::string> info = {
-        c_bold + "OS:       " + c_reset + get_distro(),
-        c_bold + "Kernel:   " + c_reset + get_kernel(),
-        c_bold + "Uptime:   " + c_reset + get_uptime(),
-        c_bold + "Shell:    " + c_reset + get_shell(),
-        c_bold + "WM:       " + c_reset + get_wm(),
-        c_bold + "Terminal: " + c_reset + get_terminal(),
+        format_info("OS:       ", get_distro()),
+        format_info("Kernel:   ", get_kernel()),
+        format_info("Uptime:   ", get_uptime()),
+        format_info("Shell:    ", get_shell()),
+        format_info("WM:       ", get_wm()),
+        format_info("Terminal: ", get_terminal()),
         "", // Linha vazia separadora
-        c_bold + "CPU:      " + c_reset + get_cpu(),
-        c_bold + "GPU:      " + c_reset + get_gpu_name(), // Nome comercial da GPU
-        c_bold + "RAM:      " + c_reset + get_ram(),
-        c_bold + "Disk:     " + c_reset + get_disk(),
+        format_info("CPU:      ", get_cpu()),
+        format_info("GPU:      ", get_gpu_name()),
+        format_info("RAM:      ", get_ram()),
+        format_info("Disk:     ", get_disk()),
         "", // Linha vazia separadora
-        c_bold + "Theme:    " + c_reset + get_gtk_theme(), // GTK Theme
-        c_bold + "Icons:    " + c_reset + get_icon_theme(), // Icons Theme
-        c_bold + "Cursor:   " + c_reset + get_cursor_theme(), // Cursor Theme
-        c_bold + "Font:     " + c_reset + get_font() // System Font
+        format_info("Theme:    ", get_gtk_theme()),
+        format_info("Icons:    ", get_icon_theme()),
+        format_info("Cursor:   ", get_cursor_theme()),
+        format_info("Font:     ", get_font())
     };
 
     // --- 3. LOGICA DE IMPRESSÃO LADO A LADO ---
 
-    // Descobrir qual dos dois vetores tem mais linhas para iterar
-    // (Lembrando que user_host e separator são linhas fixas extras no topo do info)
-    size_t info_lines_count = info.size() + 2; // + user_host, + separator
+    size_t info_lines_count = info.size() + 2; // Total de linhas de informação
     size_t max_linhas = std::max(ascii_art.size(), info_lines_count);
+
+    // Calcula quantas linhas de espaço em branco precisamos dar no topo da logo para centralizar
+    size_t vertical_offset = 0;
+    if (info_lines_count > ascii_art.size()) {
+        vertical_offset = (info_lines_count - ascii_art.size()) / 2;
+    }
 
     std::cout << std::endl; // Espaço no topo
 
     for (size_t i = 0; i < max_linhas; ++i) {
         
-        // A. Imprime a linha da arte ASCII (com cor)
         std::cout << "  "; // Margem esquerda
-        if (i < ascii_art.size()) {
-            std::cout << c_cyan << ascii_art[i] << c_reset;
+        
+        // A. Imprime a linha da arte ASCII (Centralizada Verticalmente)
+        
+        // Se estivermos dentro da janela onde a logo deve aparecer:
+        if (i >= vertical_offset && (i - vertical_offset) < ascii_art.size()) {
+            std::cout << ascii_art[i - vertical_offset];
         } else {
-            // Se a arte acabou, imprime espaços vazios para manter o alinhamento
+            // Caso contrário (muito no topo ou muito embaixo), imprime espaços
             for(int w=0; w < ascii_width; ++w) std::cout << " ";
         }
 
-        // B. Espaçamento central entre a arte e a informação
-        std::cout << "   "; 
+        std::cout << "   "; // Espaçamento central
 
         // C. Imprime a linha de informação
-        
-        // Linha 0: user@host
         if (i == 0) {
             std::cout << user_host;
         } 
-        // Linha 1: separador
         else if (i == 1) {
             std::cout << separator;
         } 
-        // Linhas seguintes: lista de info (com offset de 2)
         else if ((i - 2) < info.size()) {
             std::cout << info[i - 2];
         }
 
-        std::cout << std::endl; // Pula para a próxima linha
+        std::cout << std::endl; 
     }
 
     std::cout << std::endl << std::endl; // Espaço no final

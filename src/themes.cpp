@@ -24,7 +24,7 @@ std::string get_gsettings_value(const char* schema, const char* key) {
             raw_output.pop_back(); // Remove \n
             return raw_output.substr(1, raw_output.length() - 2); // Remove as aspas
         }
-        return "THEMES = BRUH";
+        return "BRUH";
     } catch (...) {
         return "não é compativel com KDE no momento";
     }
@@ -47,7 +47,7 @@ std::string get_cursor_theme() {
         if (xcursor != nullptr) {
             return std::string(xcursor);
         }
-        return "CURSOR = BRUH"; // Fallback caso não ache nenhum
+        return "\033[1;31mBRUH\033[0m"; // Fallback caso não ache nenhum
     }
     
     return theme;
