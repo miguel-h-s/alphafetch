@@ -55,6 +55,8 @@ int main() {
         format_info("GPU:      ", get_gpu_name()),
         format_info("RAM:      ", get_ram()),
         format_info("Disk:     ", get_disk()),
+        format_info("IP local:      ", get_local_ip()),
+        format_info("Music:     ", get_music()),
         "", // Linha vazia separadora
         format_info("Theme:    ", get_gtk_theme()),
         format_info("Icons:    ", get_icon_theme()),

@@ -10,18 +10,15 @@ std::string get_ram() {
         return "BRUH";
     }
 
-    // Convertendo bytes para Gigabytes (GiB)
     double total_ram = si.totalram * si.mem_unit / (1024.0 * 1024.0 * 1024.0);
-    
-    // Memória livre + buffers + cache (simplificado para "memória disponível")
     double free_ram = (si.freeram + si.bufferram) * si.mem_unit / (1024.0 * 1024.0 * 1024.0);
-    
-    // Memória realmente usada
     double used_ram = total_ram - free_ram;
 
-    // Formatando para aparecer com apenas 1 casa decimal (ex: 1.5 GiB)
+    // Chamando a barra de progresso do fetch.hpp
+    std::string bar = make_progress_bar(used_ram, total_ram);
+
     std::stringstream ss;
-    ss << std::fixed << std::setprecision(1) << used_ram << " GiB / " << total_ram << " GiB";
+    ss << bar << " " << std::fixed << std::setprecision(1) << used_ram << " GiB / " << total_ram << " GiB";
     
     return ss.str();
 }
