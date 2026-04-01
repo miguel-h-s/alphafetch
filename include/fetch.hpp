@@ -24,3 +24,4 @@ std::string get_cursor_theme();
 std::string get_font();
 std::string get_ram();
 std::string get_disk();
+std::string get_packages();

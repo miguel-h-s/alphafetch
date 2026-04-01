@@ -3,7 +3,7 @@ TARGET = alphafetch
 
 # Compilador e flags
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -Iinclude
+CXXFLAGS = -std=c++20 -Wall -Wextra -Os -s -Iinclude
 
 # Pastas
 SRC_DIR = src
@@ -16,11 +16,11 @@ PREFIX = /usr/local
 VERDE = \033[32m
 RESET = \033[0m
 
-# Busca todos os arquivos .cpp na pasta src
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+# Busca todos os arquivos .cpp na pasta src e em src/modules/
+SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/modules/*.cpp)
 
-# Gera a lista de arquivos .o dentro da pasta obj/
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+# Gera a lista de arquivos .o dentro da pasta obj/ mantendo a estrutura
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 
 # Regra padrão
 all: $(TARGET)
@@ -30,8 +30,14 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 	@echo "$(VERDE)[✓] $(TARGET) compilado com sucesso!$(RESET)"
 
-# Regra para compilar cada arquivo .cpp em um arquivo .o
+# Regra para compilar os arquivos .cpp da raiz de src
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Regra para compilar os arquivos .cpp que estão dentro de src/modules
+$(OBJ_DIR)/modules/%.o: $(SRC_DIR)/modules/%.cpp | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Cria a pasta obj/ se ela não existir

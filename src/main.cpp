@@ -47,6 +47,7 @@ int main() {
         format_info("Kernel:   ", get_kernel()),
         format_info("Uptime:   ", get_uptime()),
         format_info("Shell:    ", get_shell()),
+        format_info("Packages: ", get_packages()),
         format_info("WM:       ", get_wm()),
         format_info("Terminal: ", get_terminal()),
         "", // Linha vazia separadora
