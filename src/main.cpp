@@ -40,6 +40,7 @@ int main() {
     std::string separator = "";
     for(int i=0; i<20; ++i) separator += "-";
 
+    
     // Lista de informações principais tratadas com a nossa função de cores
     std::vector<std::string> info = {
         format_info("OS:       ", get_distro()),
@@ -104,6 +105,21 @@ int main() {
     }
 
     std::cout << std::endl << std::endl; // Espaço no final
+
+    // --- 4. BLOCOS DE CORES ---
+    std::cout << "  "; //margen esquerda
+    
+    // Cores normais (Fundo)
+    for(int i = 40; i <= 47; ++i) {
+        std::cout << "\033[" << i << "m   \033[0m";
+    }
+    std::cout << std::endl << "  "; // Pula linha e mantém a margem
+    
+    // Cores brilhantes (Fundo)
+    for(int i = 100; i <= 107; ++i) {
+        std::cout << "\033[" << i << "m   \033[0m";
+    }
+    std::cout << std::endl << std::endl;
 
     return 0;
 }
