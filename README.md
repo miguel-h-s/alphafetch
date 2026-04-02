@@ -1,4 +1,4 @@
-# 🐺 alphafetch
+# alphafetch
 
 Um buscador de informações do sistema (fetch) rápido, leve e modular, feito em C++20 para sistemas Linux.
 
@@ -9,7 +9,7 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 ![print de alpha](./screenshots/screenshot_gatito.png)
 ![print do grande Tux](./screenshots/screenshot_tux.png)
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 * **Rápido e Leve:** Feito em C++ puro, sem interpretadores pesados.
 * **Arquivo de Configuração:** Oculte ou exiba módulos sem precisar compilar o código de novo!
@@ -17,7 +17,7 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 * **Completo:** Mostra informações de Hardware, Sistema, Temas GTK e uso de Disco/RAM.
 * **Design Limpo:** Alinhamento automático lado a lado com arte ASCII calculada dinamicamente.
 
-## ⚙️ Configuração
+## Configuração
 
 O `alphafetch` agora suporta personalização através de um arquivo de configuração! Você pode ativar ou desativar os módulos que deseja ver na tela.
 
@@ -29,7 +29,7 @@ cp examples/default.conf ~/.config/alphafetch/config.conf
 
 Depois disso, basta abrir o ``~/.config/alphafetch/config.conf`` no seu editor favorito e mudar as opções de true para false como preferir!
 
-## 📋 requisitos para funções especiais
+## requisitos para funções especiais
 
 - **para musica:** ``playerctl``(responsavel por detectar o que esta tocando no spotify, navegador etc).
 ``sudo apt install playerctl``

@@ -19,29 +19,29 @@ void Config::load_config() {
 
     std::string line;
     while (std::getline(file, line)) {
-        // Remove espaços em branco sobrando
+        
         line.erase(0, line.find_first_not_of(" \t\r\n"));
         line.erase(line.find_last_not_of(" \t\r\n") + 1);
 
-        // Ignora linhas vazias ou que começam com #
+        
         if (line.empty() || line[0] == '#') {
             continue;
         }
 
-        // Divide a linha no sinal de '='
+        
         size_t delimiter_pos = line.find('=');
         if (delimiter_pos != std::string::npos) {
             std::string key = line.substr(0, delimiter_pos);
             std::string value = line.substr(delimiter_pos + 1);
 
-            // Limpa espaços em volta da chave e do valor
+            
             key.erase(key.find_last_not_of(" \t") + 1);
             value.erase(0, value.find_first_not_of(" \t"));
 
-            // Converte o valor para booleano
+            
             bool bool_value = (value == "true");
 
-            // Salva no nosso mapa!
+            
             options[key] = bool_value;
         }
     }

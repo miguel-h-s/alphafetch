@@ -28,7 +28,7 @@ std::string get_disk() {
         percent_used = (used_bytes / total_bytes) * 100;
     }
 
-    // Chamando a barra de progresso do fetch.hpp
+    
     std::string bar = make_progress_bar(used_bytes, total_bytes);
 
     std::stringstream ss;

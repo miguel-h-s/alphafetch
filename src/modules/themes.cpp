@@ -41,13 +41,13 @@ std::string get_icon_theme() {
 std::string get_cursor_theme() {
     std::string theme = get_gsettings_value("org.gnome.desktop.interface", "cursor-theme");
     
-    // Se voltar vazio ou der erro, tenta pegar a variável de ambiente do X11
+    
     if (theme.empty() || theme == "Unknown" || theme == "Error") {
         char* xcursor = getenv("XCURSOR_THEME");
         if (xcursor != nullptr) {
             return std::string(xcursor);
         }
-        return "\033[1;31mBRUH\033[0m"; // Fallback caso não ache nenhum
+        return "\033[1;31mBRUH\033[0m"; 
     }
     
     return theme;

@@ -1,52 +1,52 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm> // Para std::max
+#include <algorithm> 
 #include "fetch.hpp"
 #include "logos.hpp"
-#include "colors.hpp" // Adicionando o cabeçalho de cores!
+#include "colors.hpp" 
 #include "config.hpp"
 
-// Função auxiliar para pintar erros de vermelho automaticamente
+
 std::string format_info(const std::string& label, const std::string& value) {
     using namespace Colors;
     
-    // Se o valor contiver "BRUH", "Desconhecido" ou "Error", pintamos de vermelho negrito
+    
     if (value.find("BRUH") != std::string::npos || 
         value == "Desconhecido" || 
         value == "Error") {
         return B_WHITE + label + RESET + B_RED + value + RESET;
     }
     
-    // Caso contrário, imprime normal (Título em branco negrito e valor padrão)
+  
     return B_WHITE + label + RESET + value;
 }
 
 int main() {
     using namespace Colors;
 
-    // --- CARREGANDO CONFIGURAÇÕES ---
+    
     Config config;
     config.load_config();
 
-    // --- 1. ARTE EM ASCII ---
+    
     std::string distro_atual = get_distro(); 
     int ascii_width = 0;
     
-    // Puxa a arte certa baseada na distro detectada
+    
     std::vector<std::string> ascii_art = get_ascii_art(distro_atual, ascii_width);
 
-    // --- 2. COLETANDO AS INFORMAÇÕES ---
     
-    // Primeira linha: user@host
+    
+    
     std::string user_host = get_user_host();
     
-    // Separador (uma linha de traços)
+    
     std::string separator = "";
     for(int i=0; i<20; ++i) separator += "-";
 
     
-    // Lista de informações principais montada dinamicamente
+    
     std::vector<std::string> info;
     
     if (config.is_enabled("show_os"))       info.push_back(format_info(i_os      + "OS:         ", get_distro()));
@@ -57,7 +57,6 @@ int main() {
     if (config.is_enabled("show_wm"))       info.push_back(format_info(i_wm      + "WM:         ", get_wm()));
     if (config.is_enabled("show_terminal")) info.push_back(format_info(i_term    + "Terminal:   ", get_terminal()));
     
-    // Só adiciona a linha vazia se tivermos colocado informações antes
     if (!info.empty()) info.push_back(""); 
     
     if (config.is_enabled("show_cpu"))      info.push_back(format_info(i_cpu     + "CPU:        ", get_cpu()));
@@ -75,30 +74,29 @@ int main() {
     if (config.is_enabled("show_font"))     info.push_back(format_info(i_font    + "Font:       ", get_font()));
 
 
-    // --- 3. LOGICA DE IMPRESSÃO LADO A LADO ---
+    
 
     size_t info_lines_count = info.size() + 2; // Total de linhas de informação
     size_t max_linhas = std::max(ascii_art.size(), info_lines_count);
 
-    // Calcula quantas linhas de espaço em branco precisamos dar no topo da logo para centralizar
+    
     size_t vertical_offset = 0;
     if (info_lines_count > ascii_art.size()) {
         vertical_offset = (info_lines_count - ascii_art.size()) / 2;
     }
 
-    std::cout << std::endl; // Espaço no topo
+    std::cout << std::endl; 
 
     for (size_t i = 0; i < max_linhas; ++i) {
         
-        std::cout << "  "; // Margem esquerda
+        std::cout << "  "; 
         
-        // A. Imprime a linha da arte ASCII (Centralizada Verticalmente)
         
-        // Se estivermos dentro da janela onde a logo deve aparecer:
+        
+        
         if (i >= vertical_offset && (i - vertical_offset) < ascii_art.size()) {
             std::cout << ascii_art[i - vertical_offset];
         } else {
-            // Caso contrário (muito no topo ou muito embaixo), imprime espaços
             for(int w=0; w < ascii_width; ++w) std::cout << " ";
         }
 
@@ -118,18 +116,18 @@ int main() {
         std::cout << std::endl; 
     }
 
-    std::cout << std::endl << std::endl; // Espaço no final
+    std::cout << std::endl << std::endl; 
 
-    // --- 4. BLOCOS DE CORES ---
-    std::cout << "  "; //margen esquerda
     
-    // Cores normais (Fundo)
+    std::cout << "  "; 
+    
+    
     for(int i = 40; i <= 47; ++i) {
         std::cout << "\033[" << i << "m   \033[0m";
     }
-    std::cout << std::endl << "  "; // Pula linha e mantém a margem
+    std::cout << std::endl << "  "; 
     
-    // Cores brilhantes (Fundo)
+    
     for(int i = 100; i <= 107; ++i) {
         std::cout << "\033[" << i << "m   \033[0m";
     }

@@ -14,7 +14,7 @@ std::string get_ram() {
     double free_ram = (si.freeram + si.bufferram) * si.mem_unit / (1024.0 * 1024.0 * 1024.0);
     double used_ram = total_ram - free_ram;
 
-    // Chamando a barra de progresso do fetch.hpp
+    
     std::string bar = make_progress_bar(used_ram, total_ram);
 
     std::stringstream ss;
