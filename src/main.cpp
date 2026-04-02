@@ -41,29 +41,29 @@ int main() {
     for(int i=0; i<20; ++i) separator += "-";
 
     
+    
     // Lista de informações principais tratadas com a nossa função de cores
     std::vector<std::string> info = {
-        format_info("OS:       ", get_distro()),
-        format_info("Kernel:   ", get_kernel()),
-        format_info("Uptime:   ", get_uptime()),
-        format_info("Shell:    ", get_shell()),
-        format_info("Packages: ", get_packages()),
-        format_info("WM:       ", get_wm()),
-        format_info("Terminal: ", get_terminal()),
+        format_info(i_os      + "OS:         ", get_distro()),
+        format_info(i_kernel  + "Kernel:     ", get_kernel()),
+        format_info(i_uptime  + "Uptime:     ", get_uptime()),
+        format_info(i_shell   + "Shell:      ", get_shell()),
+        format_info(i_pkgs    + "Packages:   ", get_packages()),
+        format_info(i_wm      + "WM:         ", get_wm()),
+        format_info(i_term    + "Terminal:   ", get_terminal()),
         "", // Linha vazia separadora
-        format_info("CPU:      ", get_cpu()),
-        format_info("GPU:      ", get_gpu_name()),
-        format_info("RAM:      ", get_ram()),
-        format_info("Disk:     ", get_disk()),
-        format_info("IP local:      ", get_local_ip()),
-        format_info("Music:     ", get_music()),
+        format_info(i_cpu     + "CPU:        ", get_cpu()),
+        format_info(i_gpu     + "GPU:        ", get_gpu_name()),
+        format_info(i_ram     + "RAM:        ", get_ram()),
+        format_info(i_disk    + "Disk:       ", get_disk()),
+        format_info(i_ip      + "IP local:   ", get_local_ip()),
+        format_info(i_music   + "Music:      ", get_music()),
         "", // Linha vazia separadora
-        format_info("Theme:    ", get_gtk_theme()),
-        format_info("Icons:    ", get_icon_theme()),
-        format_info("Cursor:   ", get_cursor_theme()),
-        format_info("Font:     ", get_font())
+        format_info(i_theme   + "Theme:      ", get_gtk_theme()),
+        format_info(i_icons   + "Icons:      ", get_icon_theme()),
+        format_info(i_cursor  + "Cursor:     ", get_cursor_theme()),
+        format_info(i_font    + "Font:       ", get_font())
     };
-
     // --- 3. LOGICA DE IMPRESSÃO LADO A LADO ---
 
     size_t info_lines_count = info.size() + 2; // Total de linhas de informação

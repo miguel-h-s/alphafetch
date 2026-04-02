@@ -24,6 +24,25 @@ inline std::string make_progress_bar(double current, double total) {
     return bar;
 }
 
+// (Se o seu editor não tiver uma Nerd Font ativa, eles podem parecer quadradinhos aqui, mas no terminal Kitty vão funcionar!)
+const std::string i_os       = "󰣚 "; // Ícone de Linux/OS
+const std::string i_kernel   = " "; // Pinguim do Kernel
+const std::string i_uptime   = "󰔚 "; // Relógio
+const std::string i_shell    = " "; // Prompt do terminal
+const std::string i_pkgs     = "󰏖 "; // Pacote
+const std::string i_wm       = "󱂬 "; // Janelas/Gerenciador
+const std::string i_term     = " "; // Terminal
+const std::string i_cpu      = " "; // Processador
+const std::string i_gpu      = "󰢮 "; // Placa de vídeo
+const std::string i_ram      = " "; // Chip de memória
+const std::string i_disk     = "󰋊 "; // Disco rígido
+const std::string i_ip       = "󰩩 "; // Rede/IP
+const std::string i_music    = "󰝚 "; // Nota musical
+const std::string i_theme    = "󰃟 "; // tema
+const std::string i_icons    = "󰀻 "; // icones
+const std::string i_cursor   = "󰇀 "; // cursor
+const std::string i_font     = "󰛖 "; // fonte
+
 // Funções para capturar os dados do sistema
 std::string get_distro();
 std::string get_kernel();
