@@ -1,54 +1,34 @@
 #include "logos.hpp"
-#include "colors.hpp"
+#include <fstream>
+#include <iostream>
 #include <algorithm>
 
-std::vector<std::string> get_ascii_art(const std::string& distro_name, int& width) {
-    std::vector<std::string> art;
+std::vector<std::string> get_ascii_art(const std::string& distro, int& width) {
+    std::vector<std::string> logo;
     
-    
-    std::string name_lower = distro_name;
-    std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
+    // Forçamos a largura exata da logo do Debian que está no seu print!
+    width = 24;
 
-    using namespace Colors;
+    std::string distro_lower = distro;
+    std::transform(distro_lower.begin(), distro_lower.end(), distro_lower.begin(), ::tolower);
 
-    if (name_lower.find("debian") != std::string::npos) {
-        width = 14;
-        art = {
-            RED + "  _____       " + RESET, 
-            RED + " /  __ \\      " + RESET, 
-            RED + "|  /    |     " + RESET, 
-            RED + "|  \\___-      " + RESET, 
-            RED + "-_            " + RESET, 
-            RED + "  --_         " + RESET  
-        };
+    if (distro_lower.find("debian") != std::string::npos) distro_lower = "debian";
+    else if (distro_lower.find("arch") != std::string::npos) distro_lower = "arch";
+    else if (distro_lower.find("gentoo") != std::string::npos) distro_lower = "gentoo";
+
+    std::string path = "logos/" + distro_lower + ".txt";
+    std::ifstream file(path);
+
+    if (!file.is_open()) {
+        width = 3;
+        return {"[?]", "[?]", "[?]"};
     }
 
-    else if (name_lower.find("arch") != std::string::npos) {
-        width = 14;
-        art = {
-            CYAN + "       /\\       " + RESET,
-            CYAN + "      /  \\      " + RESET,
-            CYAN + "     /    \\     " + RESET,
-            CYAN + "    /      \\    " + RESET,
-            CYAN + "   /   __   \\   " + RESET,
-            CYAN + "  /   (  )   \\  " + RESET,
-            CYAN + " / __/  \\__ \\ " + RESET,
-            CYAN + "/__/      \\__\\" + RESET
-        };
+    std::string line;
+    while (std::getline(file, line)) {
+        logo.push_back(line);
     }
 
-    else {
-        width = 14;
-        art = {
-            WHITE + "    .--.    " + RESET,
-            WHITE + "   |o_o |   " + RESET,
-            YELLOW + "   |:_/ |   " + RESET,
-            WHITE + "  //   \\ \\  " + RESET,
-            WHITE + " (|     | ) " + RESET,
-            WHITE + "/'\\_   _/`\\ " + RESET,
-            YELLOW + "\\___)=(___/" + RESET
-        };
-    }
-
-    return art;
+    file.close();
+    return logo;
 }

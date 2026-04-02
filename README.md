@@ -5,7 +5,7 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 > ⚠️ **Aviso:** Este projeto está nas suas primeiras versões! Quer customizar seu alphafetch? Altere o arquivo de configuração! Quer adicionar um módulo novo ou suporte ao KDE? **Aí é no código-fonte e contribuição!**
 > *(Atualmente não há suporte ao KDE na parte de ricing, como detecção de cursor, tema e ícone).*
 
-## 📸 Demonstração
+##  Demonstração
 ![print de alpha](./screenshots/screenshot_gatito.png)
 ![print do grande Tux](./screenshots/screenshot_tux.png)
 
@@ -16,6 +16,18 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 * **Modular:** Cada informação (CPU, GPU, RAM) tem seu próprio arquivo `.cpp`.
 * **Completo:** Mostra informações de Hardware, Sistema, Temas GTK e uso de Disco/RAM.
 * **Design Limpo:** Alinhamento automático lado a lado com arte ASCII calculada dinamicamente.
+
+## Logos Customizadas e Argumentos
+
+O `alphafetch` detecta a logo da sua distribuição automaticamente, mas você também pode forçar a exibição de qualquer logo salva na pasta `logos/` passando um argumento no terminal com o prefixo `-`.
+
+Exemplos:
+```bash
+./alphafetch -php        # Exibe o elefantinho do PHP
+./alphafetch -linuxmint  # Exibe a logo do Linux Mint
+./alphafetch -arch       # Exibe a logo do Arch Linux
+```
+quer adicionar seu proprio ASCII? só jogar na pasta `logos/` e chamar ela!
 
 ## Configuração
 
