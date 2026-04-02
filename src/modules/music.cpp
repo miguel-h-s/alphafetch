@@ -19,5 +19,5 @@ std::string get_music() {
         result.pop_back();
     }
 
-    return result.empty() ? "Nada tocando" : result;
+    return result.empty() ? "Nothing playing" : result;
 }

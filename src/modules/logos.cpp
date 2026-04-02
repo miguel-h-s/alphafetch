@@ -11,18 +11,16 @@ std::vector<std::string> get_ascii_art(const std::string& distro_name, int& widt
 
     using namespace Colors;
 
-    // 1. DEBIAN (Agora um Gatinho!)
+    // 1. DEBIAN (Agora a verdadeira logo)
     if (name_lower.find("debian") != std::string::npos) {
         width = 14;
         art = {
-            CYAN + "   /\\_/\\      " + RESET,
-            CYAN + "  ( o.o )     " + RESET,
-            CYAN + "   > ^ <      " + RESET,
-            CYAN + "    / \\       " + RESET,
-            CYAN + "   (   )      " + RESET,
-            CYAN + "    ^ ^       " + RESET,
-            "              ", // Linhas vazias para manter o alinhamento
-            "              "  // com as informações do lado direito
+            RED + "  _____       " + RESET, // 14 caracteres visíveis
+            RED + " /  __ \\      " + RESET, // 14 caracteres visíveis
+            RED + "|  /    |     " + RESET, // 14 caracteres visíveis
+            RED + "|  \\___-      " + RESET, // 14 caracteres visíveis
+            RED + "-_            " + RESET, // 14 caracteres visíveis
+            RED + "  --_         " + RESET  // 14 caracteres visíveis
         };
     }
     // 2. ARCH LINUX
