@@ -4,7 +4,7 @@ TARGET = alphafetch
 CXX ?= g++
 
 
-CXXFLAGS = -std=c++20 -Wall -Wextra -Os -s -Iinclude
+CXXFLAGS = -std=c++20 -Wall -Wextra -Os -Iinclude
 
 
 SRC_DIR = src
@@ -28,7 +28,7 @@ all: $(TARGET)
 
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -s -o $@ $^
 	@echo "$(VERDE)[✓] $(TARGET) compilado com sucesso!$(RESET)"
 
 
