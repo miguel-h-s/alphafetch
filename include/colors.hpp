@@ -11,6 +11,7 @@ namespace Colors {
     const std::string MAGENTA = "\033[35m";
     const std::string CYAN    = "\033[36m";
     const std::string WHITE   = "\033[37m";
+    const std::string BOLD    = "\033[1m";
 
     // Cores Negrito (Bright/Bold)
     const std::string B_RED     = "\033[1;31m";

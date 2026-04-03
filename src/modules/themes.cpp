@@ -1,58 +1,66 @@
 #include "fetch.hpp"
-#include <cstdio>
-#include <memory>
-#include <stdexcept>
-#include <array>
+#include <cstdlib>
+#include <string>
 
-// Re-usando a função exec_command aqui para simplicidade.
-// O ideal seria criar um 'utils.cpp' com ela e incluir no Makefile.
-extern std::string exec_command(const char* cmd); 
 
-// Função auxiliar genérica para gsettings
-std::string get_gsettings_value(const char* schema, const char* key) {
-    try {
-        std::string cmd = "gsettings get ";
-        cmd += schema;
-        cmd += " ";
-        cmd += key;
-        
-        std::string raw_output = exec_command(cmd.c_str());
-        
-        // gsettings retorna com aspas simples: 'Adwaita-dark'
-        // Precisamos remover as aspas
-        if (raw_output.length() >= 3 && raw_output.front() == '\'' && raw_output.back() == '\n') {
-            raw_output.pop_back(); // Remove \n
-            return raw_output.substr(1, raw_output.length() - 2); // Remove as aspas
-        }
-        return "BRUH";
-    } catch (...) {
-        return "não é compativel com KDE no momento";
+extern std::string exec_command(const char* cmd);
+
+
+
+std::string clean_gsettings_output(std::string out) {
+    // remove '\n'
+    if (!out.empty() && out.back() == '\n')
+        out.pop_back();
+
+    
+    if (out.size() >= 2 && out.front() == '\'' && out.back() == '\'') {
+        out = out.substr(1, out.size() - 2);
     }
+
+    return out;
 }
 
+std::string get_gsettings_value(const char* schema, const char* key) {
+    std::string cmd = "gsettings get ";
+    cmd += schema;
+    cmd += " ";
+    cmd += key;
+
+    std::string output = exec_command(cmd.c_str());
+    output = clean_gsettings_output(output);
+
+    if (output.empty() || output == "null") {
+        return "";
+    }
+
+    return output;
+}
+
+// gtk
+
 std::string get_gtk_theme() {
-    return get_gsettings_value("org.gnome.desktop.interface", "gtk-theme");
+    std::string val = get_gsettings_value("org.gnome.desktop.interface", "gtk-theme");
+    return val.empty() ? "unknown-theme" : val;
 }
 
 std::string get_icon_theme() {
-    return get_gsettings_value("org.gnome.desktop.interface", "icon-theme");
+    std::string val = get_gsettings_value("org.gnome.desktop.interface", "icon-theme");
+    return val.empty() ? "unknown-icons" : val;
 }
 
 std::string get_cursor_theme() {
-    std::string theme = get_gsettings_value("org.gnome.desktop.interface", "cursor-theme");
-    
-    
-    if (theme.empty() || theme == "Unknown" || theme == "Error") {
-        char* xcursor = getenv("XCURSOR_THEME");
-        if (xcursor != nullptr) {
-            return std::string(xcursor);
-        }
-        return "\033[1;31mBRUH\033[0m"; 
+    std::string val = get_gsettings_value("org.gnome.desktop.interface", "cursor-theme");
+
+    if (!val.empty()) {
+        return val;
     }
-    
-    return theme;
+
+    // fallback universal
+    const char* xcursor = std::getenv("XCURSOR_THEME");
+    return xcursor ? std::string(xcursor) : "unknown-cursor";
 }
 
 std::string get_font() {
-    return get_gsettings_value("org.gnome.desktop.interface", "font-name");
+    std::string val = get_gsettings_value("org.gnome.desktop.interface", "font-name");
+    return val.empty() ? "unknown-font" : val;
 }

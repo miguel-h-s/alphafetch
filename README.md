@@ -6,8 +6,8 @@ Um buscador de informações do sistema (fetch) rápido, leve e modular, feito e
 > *(Atualmente não há suporte ao KDE na parte de ricing, como detecção de cursor, tema e ícone).*
 
 ##  Demonstração
-![print de alpha](./screenshots/screenshot_gatito.png)
-![print do grande Tux](./screenshots/screenshot_tux.png)
+![print](./screenshots/screenshot_gatito.png)
+![print tux](./screenshots/screenshot_tux.png)
 
 ## Funcionalidades
 
@@ -63,5 +63,11 @@ Você precisará de um compilador que suporte C++20 (como o ``g++`` 10+) e do ``
 make
 sudo make install #opcional pra instalar no sistema
 ```
+4. para o Alphafetch reconhecer seus ASCII art faça isso(sempre quando adicionar uma nova ASCII art):
+```bash
+cd alphafetch
+mkdir -p ~/.config/alphafetch/logos    
+cp logos/* ~/.config/alphafetch/logos/ 
+```
 
-Pronto! Agora você pode executar o ``alphafetch`` de qualquer lugar no seu terminal!
+Pronto!

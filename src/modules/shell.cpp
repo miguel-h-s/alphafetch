@@ -2,9 +2,17 @@
 #include <string>
 
 std::string get_shell() {
-    char* shell = std::getenv("SHELL");
-    if (shell != nullptr) {
-        return shell;
+    const char* shell = std::getenv("SHELL");
+    if (!shell) {
+        return "unknown-shell";
     }
-    return "\033[1;31mBRUH\033[0m";
+
+    std::string shell_str = shell;
+
+    size_t pos = shell_str.find_last_of('/');
+    if (pos != std::string::npos) {
+        shell_str = shell_str.substr(pos + 1);
+    }
+
+    return shell_str.empty() ? "unknown-shell" : shell_str;
 }

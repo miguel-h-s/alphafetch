@@ -13,7 +13,7 @@
 std::string get_disk() {
     struct statvfs vfs;
     if (statvfs("/", &vfs) != 0) {
-        return "\033[1;31mBRUH\033[0m";
+        return "unknown-disk";
     }
 
     double total_bytes = (double)vfs.f_blocks * vfs.f_frsize;

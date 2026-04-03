@@ -7,7 +7,7 @@
 std::string get_ram() {
     struct sysinfo si;
     if (sysinfo(&si) != 0) {
-        return "BRUH";
+        return "unknown-ram";
     }
 
     double total_ram = si.totalram * si.mem_unit / (1024.0 * 1024.0 * 1024.0);

@@ -1,76 +1,114 @@
-#include <iostream>
 #include <filesystem>
 #include <string>
+#include <vector>
+#include <optional>
+#include <cstdio>
+
 #include "fetch.hpp"
 
 namespace fs = std::filesystem;
 
-// Função auxiliar para contar arquivos em uma pasta baseado na extensão
-int count_files_in_dir(const std::string& path, const std::string& extension) {
-    int count = 0;
+// utils
+
+int count_files(const std::string& path, const std::string& ext = "") {
     try {
-        if (fs::exists(path) && fs::is_directory(path)) {
-            for (const auto& entry : fs::directory_iterator(path)) {
-                if (entry.path().extension() == extension) {
-                    count++;
-                }
+        if (!fs::exists(path) || !fs::is_directory(path))
+            return 0;
+
+        int count = 0;
+
+        for (const auto& entry : fs::directory_iterator(path)) {
+            if (ext.empty() || entry.path().extension() == ext) {
+                count++;
             }
         }
-    } catch (...) {
-        return -1; // Retorna -1 se der erro de permissão
+
+        return count;
+    } catch (const std::exception&) {
+        return 0; 
     }
-    return count;
 }
 
-std::string get_packages() {
-    std::string result = "";
+std::optional<int> count_dirs(const std::string& path) {
+    try {
+        if (!fs::exists(path) || !fs::is_directory(path))
+            return std::nullopt;
 
-    // debian/ubuntu
-    int dpkg_count = count_files_in_dir("/var/lib/dpkg/info", ".list");
-    if (dpkg_count > 0) {
-        result += std::to_string(dpkg_count) + " (dpkg)";
+        int count = 0;
+
+        for (const auto& entry : fs::directory_iterator(path)) {
+            if (entry.is_directory())
+                count++;
+        }
+
+        return count > 0 ? std::optional(count) : std::nullopt;
+
+    } catch (const std::exception&) {
+        return std::nullopt;
+    }
+}
+
+std::optional<int> count_rpm() {
+    FILE* pipe = popen("rpm -qa | wc -l", "r");
+    if (!pipe) return std::nullopt;
+
+    char buffer[128];
+    std::string result;
+
+    if (fgets(buffer, sizeof(buffer), pipe)) {
+        result = buffer;
     }
 
-    // arch
-    
-    try {
-        std::string pacman_path = "/var/lib/pacman/local";
-        if (fs::exists(pacman_path) && fs::is_directory(pacman_path)) {
-            int pacman_count = 0;
-            for (const auto& entry : fs::directory_iterator(pacman_path)) {
-                if (entry.is_directory()) pacman_count++;
-            }
-            if (pacman_count > 0) {
-                if (!result.empty()) result += ", ";
-                result += std::to_string(pacman_count) + " (pacman)";
-            }
-        }
-    } catch (...) {}
+    pclose(pipe);
 
-    // fedora
-    if (result.empty() && fs::exists("/usr/bin/rpm")) {
-        FILE* pipe = popen("rpm -qa | wc -l", "r");
-        if (pipe) {
-            char buffer[128];
-            if (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-                std::string rpm_count = buffer;
-                // Remove a quebra de linha
-                if (!rpm_count.empty() && rpm_count.back() == '\n') rpm_count.pop_back();
-                result = rpm_count + " (rpm)";
-            }
-            pclose(pipe);
+    if (!result.empty() && result.back() == '\n')
+        result.pop_back();
+
+    try {
+        return std::stoi(result);
+    } catch (...) {
+        return std::nullopt;
+    }
+}
+
+
+
+std::string get_packages() {
+    std::vector<std::string> parts;
+
+    // dpkg
+    int dpkg = count_files("/var/lib/dpkg/info", ".list");
+    if (dpkg > 0) {
+        parts.push_back(std::to_string(dpkg) + " (dpkg)");
+    }
+
+    // pacman
+    if (auto pacman = count_dirs("/var/lib/pacman/local")) {
+        parts.push_back(std::to_string(*pacman) + " (pacman)");
+    }
+
+    // rpm
+    if (parts.empty()) {
+        if (auto rpm = count_rpm()) {
+            parts.push_back(std::to_string(*rpm) + " (rpm)");
         }
     }
 
     // flatpak
-    int flatpak_count = count_files_in_dir("/var/lib/flatpak/app", "");
-    if (flatpak_count > 0) {
-        if (!result.empty()) result += ", ";
-        result += std::to_string(flatpak_count) + " (flatpak)";
+    int flatpak = count_files("/var/lib/flatpak/app");
+    if (flatpak > 0) {
+        parts.push_back(std::to_string(flatpak) + " (flatpak)");
     }
-    
-    if (result.empty()) {
-        return "Desconhecido";
+
+    if (parts.empty()) {
+        return "unknown-packages";
+    }
+
+    // join
+    std::string result;
+    for (size_t i = 0; i < parts.size(); ++i) {
+        if (i > 0) result += ", ";
+        result += parts[i];
     }
 
     return result;

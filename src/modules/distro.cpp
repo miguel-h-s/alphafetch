@@ -13,5 +13,5 @@ std::string get_distro() {
             return name;
         }
     }
-    return "\033[1;31mBRUH\033[0m";
+    return "unknown-OS";
 }

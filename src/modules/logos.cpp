@@ -1,34 +1,43 @@
-#include "logos.hpp"
-#include <fstream>
 #include <iostream>
-#include <algorithm>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <cstdlib> 
 
 std::vector<std::string> get_ascii_art(const std::string& distro, int& width) {
-    std::vector<std::string> logo;
+    std::vector<std::string> lines;
     
-    // Forçamos a largura exata da logo do Debian que está no seu print!
-    width = 24;
+    
+    const char* home_dir = std::getenv("HOME");
+    std::string path;
+    
+    if (home_dir != nullptr) {
+        path = std::string(home_dir) + "/.config/alphafetch/logos/" + distro + ".txt";
+    } else {
+        path = "logos/" + distro + ".txt";
+    }
 
-    std::string distro_lower = distro;
-    std::transform(distro_lower.begin(), distro_lower.end(), distro_lower.begin(), ::tolower);
-
-    if (distro_lower.find("debian") != std::string::npos) distro_lower = "debian";
-    else if (distro_lower.find("arch") != std::string::npos) distro_lower = "arch";
-    else if (distro_lower.find("gentoo") != std::string::npos) distro_lower = "gentoo";
-
-    std::string path = "logos/" + distro_lower + ".txt";
     std::ifstream file(path);
-
     if (!file.is_open()) {
-        width = 3;
-        return {"[?]", "[?]", "[?]"};
+        
+        std::string fallback_path = std::string(home_dir) + "/.config/alphafetch/logos/default.txt";
+        file.open(fallback_path);
+        
+        if (!file.is_open()) {
+            lines.push_back("Logo não encontrada!");
+            lines.push_back("Crie a pasta ~/.config/alphafetch/logos/");
+            return lines;
+        }
     }
 
     std::string line;
+    width = 0;
     while (std::getline(file, line)) {
-        logo.push_back(line);
+        lines.push_back(line);
+        if ((int)line.length() > width) {
+            width = line.length();
+        }
     }
-
-    file.close();
-    return logo;
+    
+    return lines;
 }

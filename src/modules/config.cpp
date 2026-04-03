@@ -1,77 +1,80 @@
 #include "config.hpp"
+
 #include <fstream>
-#include <iostream>
-#include <sstream>
-#include <cstdlib> 
+#include <cstdlib>
 #include <algorithm>
+#include <unordered_map>
 
 #include "colors.hpp"
-#include <map>
-#include <string>
 
+namespace Utils {
+    std::string trim(const std::string& str) {
+        const char* ws = " \t\n\r";
+
+        size_t start = str.find_first_not_of(ws);
+        if (start == std::string::npos) return "";
+
+        size_t end = str.find_last_not_of(ws);
+        return str.substr(start, end - start + 1);
+    }
+
+    std::string to_lower(std::string str) {
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        return str;
+    }
+}
+
+// configuração
 
 void Config::load_config() {
     const char* home = std::getenv("HOME");
-    if (!home) return; 
+    if (!home) return;
 
-    std::string path = std::string(home) + "/.config/alphafetch/config.conf";
-    std::ifstream file(path);
-
-    if (!file.is_open()) {
-        return;
-    }
+    std::ifstream file(std::string(home) + "/.config/alphafetch/config.conf");
+    if (!file) return;
 
     std::string line;
+
     while (std::getline(file, line)) {
-        // Remove espaços do começo e do fim da linha
-        line.erase(0, line.find_first_not_of(" \t\r\n"));
-        line.erase(line.find_last_not_of(" \t\r\n") + 1);
+        line = Utils::trim(line);
 
-        // Pula linhas vazias ou comentários
-        if (line.empty() || line[0] == '#') {
+        if (line.empty() || line[0] == '#')
             continue;
-        }
 
-        size_t delimiter_pos = line.find('=');
-        if (delimiter_pos != std::string::npos) {
-            std::string key = line.substr(0, delimiter_pos);
-            std::string value = line.substr(delimiter_pos + 1);
+        auto pos = line.find('=');
+        if (pos == std::string::npos)
+            continue;
 
-            // Limpa espaços em volta da CHAVE (ex: "show_os " -> "show_os")
-            key.erase(key.find_last_not_of(" \t\r\n") + 1);
-            key.erase(0, key.find_first_not_of(" \t\r\n"));
+        std::string key   = Utils::trim(line.substr(0, pos));
+        std::string value = Utils::trim(line.substr(pos + 1));
 
-            // Limpa espaços em volta do VALOR (ex: " true " -> "true")
-            value.erase(0, value.find_first_not_of(" \t\r\n"));
-            value.erase(value.find_last_not_of(" \t\r\n") + 1);
-
-            // Salva a string limpa no mapa
-            options[key] = value;
-        }
+        options[key] = value;
     }
-
-    file.close();
 }
 
+// cores
+
 std::string Config::get_color_ansi(const std::string& color_name) {
-    std::string name = color_name;
-    for (auto &c : name) c = std::tolower(c);
+    static const std::unordered_map<std::string, std::string> color_map = {
+        {"red", Colors::RED},
+        {"green", Colors::GREEN},
+        {"yellow", Colors::YELLOW},
+        {"blue", Colors::BLUE},
+        {"magenta", Colors::MAGENTA},
+        {"cyan", Colors::CYAN},
+        {"white", Colors::WHITE},
 
-    if (name == "red")       return Colors::RED;
-    if (name == "green")     return Colors::GREEN;
-    if (name == "yellow")    return Colors::YELLOW;
-    if (name == "blue")      return Colors::BLUE;
-    if (name == "magenta")   return Colors::MAGENTA;
-    if (name == "cyan")      return Colors::CYAN;
-    if (name == "white")     return Colors::WHITE;
-    
-    if (name == "b_red")     return Colors::B_RED;
-    if (name == "b_green")   return Colors::B_GREEN;
-    if (name == "b_yellow")  return Colors::B_YELLOW;
-    if (name == "b_blue")    return Colors::B_BLUE;
-    if (name == "b_magenta") return Colors::B_MAGENTA;
-    if (name == "b_cyan")    return Colors::B_CYAN;
-    if (name == "b_white")   return Colors::B_WHITE;
+        {"b_red", Colors::B_RED},
+        {"b_green", Colors::B_GREEN},
+        {"b_yellow", Colors::B_YELLOW},
+        {"b_blue", Colors::B_BLUE},
+        {"b_magenta", Colors::B_MAGENTA},
+        {"b_cyan", Colors::B_CYAN},
+        {"b_white", Colors::B_WHITE}
+    };
 
-    return Colors::RESET; // Se não achar nenhuma ou for inválida
+    std::string name = Utils::to_lower(color_name);
+
+    auto it = color_map.find(name);
+    return (it != color_map.end()) ? it->second : Colors::RESET;
 }

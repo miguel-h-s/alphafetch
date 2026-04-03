@@ -1,20 +1,45 @@
 #include "fetch.hpp"
-#include <unistd.h>
-#include <fstream>
-#include <iostream>
+#include "colors.hpp"
 
-std::string get_user_host() {
-    char hostname[1024];
-    hostname[1023] = '\0';
-    
-    if (gethostname(hostname, 1023) != 0) {
-        return "\033[1;31mBRUH@BRUH\033[0m";
+#include <unistd.h>
+#include <cstdlib>
+#include <string>
+
+// sistema
+
+namespace System {
+
+    std::string get_hostname() {
+        char buffer[256]; 
+
+        if (gethostname(buffer, sizeof(buffer)) != 0) {
+            return "unknown-host";
+        }
+
+        buffer[sizeof(buffer) - 1] = '\0'; 
+
+        return std::string(buffer);
     }
 
-    
-    char* user = getenv("USER");
-    std::string user_str = (user != nullptr) ? user : "unknown";
+    std::string get_user() {
+        const char* user = std::getenv("USER");
+        return user ? std::string(user) : "unknown-user";
+    }
+}
 
-    
-    return c_green + c_bold + user_str + c_reset + "@" + c_green + c_bold + std::string(hostname) + c_reset;
+// formata
+
+static std::string format_user_host(const std::string& user,
+                                    const std::string& host) {
+    return Colors::GREEN + Colors::BOLD + user + Colors::RESET +
+           "@" +
+           Colors::GREEN + Colors::BOLD + host + Colors::RESET;
+}
+
+
+std::string get_user_host() {
+    return format_user_host(
+        System::get_user(),
+        System::get_hostname()
+    );
 }

@@ -38,7 +38,7 @@ std::string get_gpu_name() {
             
             return gpu_name;
         } else {
-            return "\033[1;31mBRUH\033[0m";
+            return "unknown-gpu";
         }
     } catch (...) {
         return "\033[1;31mERROR\033[0m";

@@ -63,3 +63,4 @@ std::string get_packages();
 std::string get_local_ip();
 std::string get_battery();
 std::string get_music();
+std::string get_distro_icon(const std::string& distro_name);
